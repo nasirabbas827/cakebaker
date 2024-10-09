@@ -1,0 +1,15 @@
+{% extends 'admin_commonfile.html' %}
+
+{% block title %}Admin Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ session['admin_username'] }}!</h2>
+    <p>This is the admin dashboard where you can manage various tasks.</p>
+    <ul>
+        <li><a href="{{ url_for('view_cakes') }}">View Cakes</a></li>
+        <li><a href="{{ url_for('admin_orders') }}">View Orders</a></li>
+        <li><a href="{{ url_for('admin_sales_records') }}">Generate Sales Records</a></li> <!-- New Link -->
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'admin_commonfile.html' %}
+
+{% block title %}Edit Cake{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Cake</h2>
+    <form action="/admin/edit_cake/{{ cake[0] }}" method="POST" enctype="multipart/form-data">
+        <label for="categoryname">Category Name:</label>
+        <input type="text" id="categoryname" name="categoryname" value="{{ cake[1] }}" required><br><br>
+
+        <label for="name">Cake Name:</label>
+        <input type="text" id="name" name="name" value="{{ cake[2] }}" required><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ cake[3] }}</textarea><br><br>
+
+        <label for="size">Size:</label>
+        <select id="size" name="size" required>
+            <option value="Small" {% if cake[4] == 'Small' %}selected{% endif %}>Small</option>
+            <option value="Medium" {% if cake[4] == 'Medium' %}selected{% endif %}>Medium</option>
+            <option value="Large" {% if cake[4] == 'Large' %}selected{% endif %}>Large</option>
+        </select><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" value="{{ cake[5] }}" required><br><br>
+
+        <label for="availability">Availability:</label>
+        <select id="availability" name="availability" required>
+            <option value="Available" {% if cake[7] == 'Available' %}selected{% endif %}>Available</option>
+            <option value="Out of Stock" {% if cake[7] == 'Out of Stock' %}selected{% endif %}>Out of Stock</option>
+        </select><br><br>
+
+        <label for="image">Current Image:</label>
+        <img src="{{ url_for('static', filename='uploads/' + cake[6]) }}" alt="{{ cake[2] }}" width="100"><br><br>
+
+        <label for="image">Upload New Image (optional):</label>
+        <input type="file" id="image" name="image" accept="image/*"><br><br>
+
+        <input type="submit" value="Update Cake">
+    </form>
+</div>
+{% endblock %}

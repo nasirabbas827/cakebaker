@@ -1,0 +1,53 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome, {{ username }}!</h2>
+    <p>This is your dashboard. You can manage your account and view other details here.</p>
+
+    <form method="POST" action="{{ url_for('dashboard') }}">
+        <input type="text" name="search_query" placeholder="Search cakes" value="{{ request.form['search_query'] }}">
+        <input type="number" name="price_min" placeholder="Min Price" value="{{ request.form['price_min'] }}">
+        <input type="number" name="price_max" placeholder="Max Price" value="{{ request.form['price_max'] }}">
+        <select name="category">
+            <option value="">Select Category</option>
+            {% for category in categories %}
+                <option value="{{ category[0] }}">{{ category[0] }}</option>
+            {% endfor %}
+        </select>
+        <select name="size">
+            <option value="">Select Size</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <input type="submit" value="Search">
+    </form>
+
+    <h3>Available Cakes</h3>
+    <div class="cakes-list">
+        {% for cake in cakes %}
+            <div class="cake-item">
+                <img src="{{ url_for('static', filename='uploads/' ~ cake[6]) }}" alt="{{ cake[2] }}" style="width: 200px; height: auto;"> <!-- Cake Image -->
+                <h4>{{ cake[2] }}</h4> <!-- Cake Name -->
+                <p>{{ cake[3] }}</p> <!-- Description -->
+                <p>Size: {{ cake[4] }}</p> <!-- Size -->
+                <p>Price: ${{ cake[5] }}</p> <!-- Price -->
+                <p>Category: {{ cake[1] }}</p> <!-- Category Name -->
+                <p>Availability: {{ cake[7] }}</p> <!-- Availability -->
+
+                {% if cake[7] == 'Available' %} <!-- Check availability directly from the cake record -->
+                    <form action="/add_to_cart/{{ cake[0] }}" method="POST">
+                        <input type="number" name="quantity" value="1" min="1" max="1">
+                        <input type="submit" value="Add to Cart">
+                    </form>
+                {% else %}
+                    <p>Out of Stock</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

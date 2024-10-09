@@ -1,0 +1,46 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}My Cart{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Cart</h2>
+
+    {% if cart_items %}
+    <table>
+        <tr>
+            <th>Cake Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item[3] }}</td>
+            <td>
+                <form action="/update_cart/{{ item[0] }}" method="POST">
+                    <input type="number" name="quantity" value="{{ item[1] }}" min="1">
+                    <input type="submit" value="Update">
+                </form>
+            </td>
+            <td>${{ item[4] }}</td>
+            <td>${{ item[4] * item[1] }}</td>  <!-- Total price for this item -->
+            <td>
+                <form action="/remove_from_cart/{{ item[0] }}" method="POST">
+                    <input type="submit" value="Remove">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Grand Total: ${{ grand_total }}</h3>
+    <a href="/make_order" class="btn btn-primary">Make Order</a>
+
+    {% else %}
+    <p style="margin: 40px; color:red;">Your cart is currently empty. Add some cakes to it!</p>
+    <a href="/dashboard" class="btn btn-secondary">Continue Shopping</a>
+    {% endif %}
+</div>
+{% endblock %}

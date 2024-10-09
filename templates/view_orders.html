@@ -1,0 +1,67 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}View Orders{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Payment Status</th>
+            <th>Payment Method</th>
+            <th>Actions</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>${{ order[2] }}</td>
+            <td>{{ order[3] }}</td>
+            <td>{{ order[4] }}</td>  <!-- Assuming index 4 is payment status -->
+            <td>{{ order[5] }}</td>  <!-- Assuming index 5 is payment method -->
+            <td>
+                <!-- Delete button (if order status is Pending and payment method is Cash on Delivery) -->
+                {% if order[3] == 'Pending' and order[5] == 'Cash on Delivery' %}
+                    <form method="POST" action="{{ url_for('delete_order', order_id=order[0]) }}" >
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Delete Order">
+                    </form>
+                {% endif %}
+                
+                <!-- Pay Now button (if payment method is not Cash on Delivery and payment status is Pending) -->
+                {% if order[5] != 'Cash on Delivery' and order[4] == 'Pending' %}
+                    <button onclick="togglePaymentForm('payment-form-{{ order[0] }}')">Pay Now</button>
+                    <form id="payment-form-{{ order[0] }}" method="POST" action="{{ url_for('pay_order', order_id=order[0]) }}" enctype="multipart/form-data" style="display:none;">
+                        <label for="transaction_picture">Upload Transaction Picture:</label>
+                        <input type="file" name="transaction_picture" id="transaction_picture" required>
+                        <input type="submit" value="Submit Payment">
+                    </form>
+                {% endif %}
+                
+                <!-- Customization Request button (if payment status is Paid) -->
+                {% if order[4] == 'Paid' and order[3] == 'Confirmed' %}
+                    <a href="{{ url_for('customization_request', order_id=order[0]) }}">Add Customization Request</a>
+                {% endif %}
+                
+                <a href="/order_details/{{ order[0] }}">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+function togglePaymentForm(formId) {
+    const form = document.getElementById(formId);
+    if (form.style.display === "none" || form.style.display === "") {
+        form.style.display = "block"; // Show the form
+    } else {
+        form.style.display = "none"; // Hide the form
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'admin_commonfile.html' %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Order Details for Order #{{ order[0] }}</h2>
+    <p><strong>User ID:</strong> {{ order[1] }}</p>
+    <p><strong>Order Date:</strong> {{ order[2] }}</p>
+    <p><strong>Total Amount:</strong> ${{ order[3] }}</p>
+    <p><strong>Order Status:</strong> {{ order[4] }}</p>
+    <p><strong>Payment Status:</strong> {{ order[5] }}</p>
+    <p><strong>Payment Method:</strong> {{ order[6] }}</p>
+
+    {% if transactions %}
+    <h3>Transaction Details</h3>
+    <table>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Transaction Date</th>
+            <th>Amount</th>
+            <th>Transaction Picture</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction[0] }}</td>
+            <td>{{ transaction[2] }}</td>
+            <td>${{ transaction[4] }}</td>
+            <td>
+                <img src="{{ url_for('static', filename='uploads/' + transaction[3]) }}" alt="Transaction Picture" style="width: 100px;">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No transactions available for this order.</p>
+    {% endif %}
+</div>
+{% endblock %}

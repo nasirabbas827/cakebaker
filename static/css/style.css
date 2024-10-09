@@ -1,0 +1,331 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+    margin: 30px;
+    text-align: center;
+}
+
+/* Navbar Styles */
+nav {
+    background-color: #343a40; /* Dark background */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    color: white; /* White text for links */
+    text-decoration: none;
+    padding: 8px 16px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+nav ul li a:hover {
+    background-color: #495057; /* Lighter dark color for hover */
+}
+
+/* Optional: Add a branding/logo area */
+.navbar-brand {
+    color: white;
+    font-size: 1.5rem; /* Adjust the size of the brand */
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: #ff6347; /* Color change on hover */
+}
+
+/* Flash messages */
+ul li.success {
+    list-style: none;
+    color: green;
+}
+
+ul li.error {
+    list-style: none;
+    color: red;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    bottom: 0;
+    margin-top: 120px;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Buttons */
+.btn, input[type="submit"], button {
+    background-color: #ff6347; /* Tomato */
+    color: white;
+    border: none;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.btn:hover, input[type="submit"]:hover, button:hover {
+    background-color: #ff4500; /* Darker tomato */
+}
+
+/* Hero Section */
+#hero {
+    height: 500px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../bg/bg.jpg');
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+}
+
+#hero .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: #f1f1f1;
+    text-align: center;
+}
+
+#hero .hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: #f1f1f1;
+    text-align: center;
+}
+
+/* About Section */
+#about {
+    padding: 50px 0;
+    background-color: #fff;
+    text-align: center;
+}
+
+#about p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+/* Available Cakes Section */
+#cakes {
+    background-color: #f9f9f9;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.cakes-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.cake-item {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.cake-item img {
+    border-radius: 10px;
+}
+
+.cake-item h4 {
+    margin: 15px 0 5px 0;
+    font-size: 1.4rem;
+}
+
+.cake-item p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+/* Contact Section */
+#contact {
+    background-color: #fff;
+    padding: 50px 0;
+    text-align: center;
+}
+
+#contact form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#contact input, #contact textarea {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+}
+
+#contact input:focus, #contact textarea:focus {
+    border-color: #ff6347; /* Tomato */
+    outline: none;
+}
+
+#contact textarea {
+    height: 150px;
+    resize: none;
+}
+
+/* Add Cake Form */
+.container form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container form label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.container form input[type="text"], 
+.container form input[type="email"], 
+.container form input[type="password"],
+.container form input[type="number"],
+.container form select, 
+.container form textarea {
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ed0606;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+}
+
+
+.container form input[type="text"]:focus, 
+.container form input[type="email"]:focus, 
+.container form input[type="password"]:focus,
+.container form input[type="number"]:focus, 
+.container form select:focus, 
+.container form textarea:focus {
+    border-color: #ff6347; /* Tomato */
+    outline: none;
+}
+
+/* Custom Select Styles */
+.container form select {
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Orders Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #ff6347;
+    color: white;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table tr td button, table tr td a {
+    background-color: #ff6347;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+table tr td button:hover, table tr td a:hover {
+    background-color: #ff4500;
+}
+
+table a {
+    
+    margin: 20px;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    #hero {
+        height: auto;
+        padding: 100px 20px;
+    }
+    
+    .cakes-list {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #contact input, #contact textarea {
+        width: 90%;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust buttons and inputs for smaller screens */
+    .btn, input[type="submit"], button {
+        width: 100%;
+    }
+}

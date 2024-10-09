@@ -1,0 +1,76 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block main %}
+<section id="hero">
+    <div class="hero-content">
+        <h1>Welcome to Our Cake Shop</h1>
+        <p>Your one-stop shop for delicious cakes!</p>
+    </div>
+</section>
+{% endblock %}
+{% block content %}
+<section id="about">
+    <h2>About Us</h2>
+    <p>At Our Cake Shop, we specialize in creating exquisite cakes for every occasion. Our passion for baking is matched only by our commitment to using the finest ingredients. Whether it's a birthday, wedding, or any celebration, we have the perfect cake for you!</p>
+</section>
+
+<section id="cakes">
+    <h2>Available Cakes</h2>
+    <form method="POST" action="{{ url_for('home') }}">
+        <input type="text" name="search_query" placeholder="Search cakes" value="{{ request.form['search_query'] }}">
+        <input type="number" name="price_min" placeholder="Min Price" value="{{ request.form['price_min'] }}">
+        <input type="number" name="price_max" placeholder="Max Price" value="{{ request.form['price_max'] }}">
+        <select name="category">
+            <option value="">Select Category</option>
+            {% for category in categories %}
+                <option value="{{ category[0] }}">{{ category[0] }}</option>
+            {% endfor %}
+        </select>
+        <select name="size">
+            <option value="">Select Size</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+        <input type="submit" value="Search">
+    </form>
+    
+    <h3>Available Cakes</h3>
+    <div class="cakes-list">
+        {% for cake in cakes %}
+            <div class="cake-item">
+                <img src="{{ url_for('static', filename='uploads/' ~ cake[6]) }}" alt="{{ cake[2] }}" style="width: 200px; height: auto;">
+                <h4>{{ cake[2] }}</h4>
+                <p>{{ cake[3] }}</p>
+                <p>Size: {{ cake[4] }}</p>
+                <p>Price: ${{ cake[5] }}</p>
+                <p>Category: {{ cake[1] }}</p>
+                <p>Availability: {{ cake[7] }}</p>
+    
+                {% if cake[7] == 'Available' %}
+                    <form action="/add_to_cart/{{ cake[0] }}" method="POST">
+                        <input type="number" name="quantity" value="1" min="1" max="1">
+                        <input type="submit" value="Add to Cart">
+                    </form>
+                {% else %}
+                    <p>Out of Stock</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+</section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+    <p>If you have any questions, feel free to reach out!</p>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <input type="submit" value="Send Message">
+    </form>
+</section>
+{% endblock %}

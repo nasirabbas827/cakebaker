@@ -1,0 +1,25 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Order Details for Order #{{ order_id }}</h2>
+    <table>
+        <tr>
+            <th>Cake Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        {% for item in order_items %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>${{ item[3] }}</td>
+            <td>${{ item[3] * item[2] }}</td> <!-- Total Price -->
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

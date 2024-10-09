@@ -1,0 +1,36 @@
+{% extends 'admin_commonfile.html' %}
+
+{% block title %}View Cakes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Cakes List</h2>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        {% for cake in cakes %}
+        <tr>
+            <td>{{ cake[1] }}</td>
+            <td>{{ cake[2] }}</td>
+            <td>{{ cake[3] }}</td>
+            <td>{{ cake[4] }}</td>
+            <td>{{ cake[5] }}</td>
+            <td>{{ cake[7] }}</td>
+            <td><img src="{{ url_for('static', filename='uploads/' + cake[6]) }}" alt="{{ cake[2] }}" width="100"></td>
+            <td>
+                <a href="{{ url_for('edit_cake', cake_id=cake[0]) }}">Edit</a> |
+                <a href="{{ url_for('delete_cake', cake_id=cake[0]) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

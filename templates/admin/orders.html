@@ -1,0 +1,49 @@
+{% extends 'admin_commonfile.html' %}
+
+{% block title %}View Orders{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>All Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Order Status</th>
+            <th>Payment Status</th>
+            <th>Payment Method</th>
+            <th>Actions</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>{{ order[2] }}</td>
+            <td>${{ order[3] }}</td>
+            <td>{{ order[4] }}</td>
+            <td>{{ order[5] }}</td>
+            <td>{{ order[6] }}</td>
+            <td>
+                <!-- Update Order Status Form -->
+                <form method="POST" >
+                    <input type="hidden" name="order_id" value="{{ order[0] }}">
+                    <select name="order_status">
+                        <option value="Pending" {% if order[4] == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Confirmed" {% if order[4] == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                        <option value="Shipped" {% if order[4] == 'Shipped' %}selected{% endif %}>Shipped</option>
+                        <option value="Delivered" {% if order[4] == 'Delivered' %}selected{% endif %}>Delivered</option>
+                        <option value="Canceled" {% if order[4] == 'Canceled' %}selected{% endif %}>Canceled</option>
+                    </select>
+                    <input type="submit" value="Update">
+                </form>
+
+                <!-- View Details Button -->
+                <a href="{{ url_for('view_order_details', order_id=order[0]) }}">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

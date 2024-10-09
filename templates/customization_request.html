@@ -1,0 +1,45 @@
+{% extends 'commonfile.html' %}
+
+{% block title %}Customization Request{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Add Customization Request for Order #{{ order_id }}</h2>
+    <form method="POST">
+        <label for="size">Size:</label>
+        <input type="text" name="size" required>
+        
+        <label for="design_details">Design Details:</label>
+        <textarea name="design_details" required></textarea>
+        
+        <label for="additional_description">Additional Description:</label>
+        <textarea name="additional_description"></textarea>
+        
+        <input type="submit" value="Submit Customization Request">
+    </form>
+
+    <h3>Your Customization Requests</h3>
+    <table>
+        <tr>
+            <th>Request ID</th>
+            <th>Size</th>
+            <th>Design Details</th>
+            <th>Additional Description</th>
+            <th>Actions</th>
+        </tr>
+        {% for request in customization_requests %}
+        <tr>
+            <td>{{ request[0] }}</td>
+            <td>{{ request[2] }}</td>
+            <td>{{ request[3] }}</td>
+            <td>{{ request[4] }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('delete_customization', request_id=request[0]) }}" >
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
