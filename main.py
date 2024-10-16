@@ -1,8 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
+from flask_mail import Mail
+from config import send_payment_confirmation_email  
+from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
+import csv
+from flask import make_response
+from io import StringIO 
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+
+def allowed_file(filename):
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 # Configure MySQL
 app.config['MYSQL_HOST'] = 'localhost'
@@ -11,6 +23,18 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'homebakers_db'
 
 mysql = MySQL(app)
+
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Replace with your SMTP server
+app.config['MAIL_PORT'] = 587  # Replace with your SMTP port (587 is for TLS)
+app.config['MAIL_USERNAME'] = 'nasiryt.827@gmail.com'  # Replace with your email address
+app.config['MAIL_PASSWORD'] = 'mtvp ruzp aqfu tfxt'  # Replace with your email password
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_DEFAULT_SENDER'] = 'nasiryt.827@gmail.com'  # Replace with your default sender email
+
+mail = Mail(app)
 
 # Home route
 @app.route('/', methods=['GET', 'POST'])
@@ -333,9 +357,6 @@ def delete_order(order_id):
     flash('Order deleted successfully!', 'success')
     return redirect(url_for('view_orders'))
 
-from flask import request, flash, redirect, url_for
-import os
-from datetime import datetime
 
 @app.route('/pay_order/<int:order_id>', methods=['POST'])
 def pay_order(order_id):
@@ -343,27 +364,15 @@ def pay_order(order_id):
         flash('Please log in to pay for an order.', 'warning')
         return redirect(url_for('login'))
 
-    # Handle file upload
-    if 'transaction_picture' not in request.files:
-        flash('No file part', 'danger')
-        return redirect(url_for('view_orders'))
-
     file = request.files['transaction_picture']
-    if file.filename == '':
-        flash('No selected file', 'danger')
-        return redirect(url_for('view_orders'))
-
-    # Allow only certain file extensions
     if file and allowed_file(file.filename):
-        # Save the file to a directory
         filename = secure_filename(file.filename)
-        file_path = os.path.join('static/uploads', filename)  # Adjust the path as necessary
+        file_path = os.path.join('static/uploads', filename)
         file.save(file_path)
 
-        # Database operations
         cur = mysql.connection.cursor()
 
-        # Update the Orders table
+        # Update Orders table
         cur.execute("""
             UPDATE Orders 
             SET payment_status = 'Paid', order_status = 'Confirmed' 
@@ -376,18 +385,32 @@ def pay_order(order_id):
             VALUES (%s, %s, %s, (SELECT total_amount FROM Orders WHERE order_id = %s))
         """, (order_id, datetime.now(), filename, order_id))
 
+        # Get user and order details
+        cur.execute("SELECT email, fullname FROM users WHERE id = %s", (session['user_id'],))
+        user = cur.fetchone()
+
+        cur.execute("SELECT total_amount, payment_method FROM Orders WHERE order_id = %s", (order_id,))
+        order = cur.fetchone()
+
         mysql.connection.commit()
         cur.close()
 
-        flash('Payment processed successfully!', 'success')
+        # Send payment confirmation email using the utility function
+        send_payment_confirmation_email(
+            user_email=user[0],
+            order_id=order_id,
+            total_amount=order[0],
+            payment_method=order[1],
+            user_fullname=user[1]
+        )
+
+        flash('Payment processed successfully! A confirmation email has been sent.', 'success')
     else:
         flash('Invalid file type', 'danger')
 
     return redirect(url_for('view_orders'))
 
-def allowed_file(filename):
-    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
 
 
 @app.route('/customization_request/<int:order_id>', methods=['GET', 'POST'])
@@ -486,12 +509,6 @@ def admin_logout():
     flash('Admin has been logged out.', 'info')
     return redirect(url_for('adminlogin'))
 
-
-import os
-from werkzeug.utils import secure_filename
-
-# Path for saving images
-app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 
 # Route for adding cakes
 @app.route('/admin/add_cake', methods=['GET', 'POST'])
@@ -641,10 +658,6 @@ def view_order_details(order_id):
 
     return render_template('admin/order_details.html', order=order, transactions=transactions)
 
-
-import csv
-from flask import make_response
-from io import StringIO  # Import StringIO
 
 @app.route('/admin/sales_records', methods=['GET'])
 def admin_sales_records():

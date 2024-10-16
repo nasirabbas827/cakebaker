@@ -276,6 +276,8 @@ table th, table td {
     border-bottom: 1px solid #ddd;
 }
 
+
+
 table th {
     background-color: #ff6347;
     color: white;
@@ -300,7 +302,12 @@ table tr td button:hover, table tr td a:hover {
 
 table a {
     
-    margin: 20px;
+    text-decoration: none;
+
+}
+
+.cust{
+    background-color: #333;
 }
 
 

@@ -14,6 +14,7 @@
             <th>Payment Status</th>
             <th>Payment Method</th>
             <th>Actions</th>
+            <th>Actions</th>
         </tr>
         {% for order in orders %}
         <tr>
@@ -21,8 +22,8 @@
             <td>{{ order[1] }}</td>
             <td>${{ order[2] }}</td>
             <td>{{ order[3] }}</td>
-            <td>{{ order[4] }}</td>  <!-- Assuming index 4 is payment status -->
-            <td>{{ order[5] }}</td>  <!-- Assuming index 5 is payment method -->
+            <td>{{ order[4] }}</td> 
+            <td>{{ order[5] }}</td>  
             <td>
                 <!-- Delete button (if order status is Pending and payment method is Cash on Delivery) -->
                 {% if order[3] == 'Pending' and order[5] == 'Cash on Delivery' %}
@@ -44,10 +45,12 @@
                 
                 <!-- Customization Request button (if payment status is Paid) -->
                 {% if order[4] == 'Paid' and order[3] == 'Confirmed' %}
-                    <a href="{{ url_for('customization_request', order_id=order[0]) }}">Add Customization Request</a>
+                    <a class="cust" href="{{ url_for('customization_request', order_id=order[0]) }}">Customization Request</a>
                 {% endif %}
                 
-                <a href="/order_details/{{ order[0] }}">View Details</a>
+            </td>
+            <td>
+            <a href="/order_details/{{ order[0] }}">Details</a>
             </td>
         </tr>
         {% endfor %}

@@ -15,6 +15,7 @@
             <th>Payment Status</th>
             <th>Payment Method</th>
             <th>Actions</th>
+            <th>Actions</th>
         </tr>
         {% for order in orders %}
         <tr>
@@ -40,7 +41,10 @@
                 </form>
 
                 <!-- View Details Button -->
-                <a href="{{ url_for('view_order_details', order_id=order[0]) }}">View Details</a>
+            </td>
+            <td>
+                <a href="{{ url_for('view_order_details', order_id=order[0]) }}">Details</a>
+
             </td>
         </tr>
         {% endfor %}
