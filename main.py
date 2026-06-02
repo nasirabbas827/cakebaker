@@ -10,7 +10,7 @@ from flask import make_response
 from io import StringIO 
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = "YOUR_OWN_API_KEY"
 
 def allowed_file(filename):
     allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
